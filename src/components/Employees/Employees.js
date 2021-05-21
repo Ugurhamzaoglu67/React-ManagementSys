@@ -1,17 +1,28 @@
-import { useState,useContext } from 'react'
+import { useState,useContext, useEffect } from 'react'
 import SingleEmployee from "./SingleEmployee";
 import {EmployeesContext} from '../../contexts/EmployeesContext'
 import { Modal, Button } from 'react-bootstrap'
 import AddForm from '../Forms/AddForm'
 
+
+
+
 const Employees = () => {
 
-  const { employees } = useContext(EmployeesContext) //Direk kendisinin Kullanacağı contexti belirtiyoruz.
+    const { employees } = useContext(EmployeesContext) //Direk kendisinin Kullanacağı contexti belirtiyoruz.
 
-  const [show, setShow] = useState(false)
+    const [show, setShow] = useState(false)
 
-  const handleClose = () => setShow(false)
-  const handleShow = () => setShow(true)
+
+    const modalClose = () => setShow(false)
+    const modalShow = () => setShow(true)
+
+
+    useEffect(() => {
+
+        modalClose()
+    }, [employees]) //employees 'deki bir değişklik te modalClose() çalışsın.
+
 
 
     return (
@@ -23,9 +34,11 @@ const Employees = () => {
                     <h2>
                     <i className="fa fa-users mr-1" aria-hidden="true"></i>  Manage <b>Employees</b>
                     </h2>
+
+                    
                 </div>
                 <div className="col-sm-3">
-                    <Button onClick={handleShow}  className=" p-2" variant="success" data-toggle="modal" >
+                    <Button onClick={modalShow}  className=" p-2" variant="success" data-toggle="modal" >
                     <i className="material-icons">&#xE147;</i>{" "}
                     <span>Add New Employee</span>
                     </Button>
@@ -49,7 +62,7 @@ const Employees = () => {
                 </tbody>
             </table>
 
-            <Modal show={show}  onHide={handleClose}>
+            <Modal show={show}  onHide={modalClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>New Employee Form</Modal.Title>
                 </Modal.Header>
@@ -60,6 +73,8 @@ const Employees = () => {
 
                 
             </Modal>
+
+           
         </>
     );
 };
